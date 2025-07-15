@@ -1,6 +1,5 @@
 #include <stack>
 #include <string>
-#include <algorithm>
 using namespace std;
 
 class Solution {
@@ -12,35 +11,31 @@ public:
         return -1;
     }
 
-    string infixToPrefix(string s) {
-        
-        reverse(s.begin(), s.end());
-        for (int i = 0; i < s.size(); i++) {
-            if (s[i] == '(') s[i] = ')';
-            else if (s[i] == ')') s[i] = '(';
-        }
-
+    string infixToPostfix(string& s) {
         stack<char> st;
-        string result;
+        string ans;
+        int n = s.length();
 
-        for (char ch : s) {
-            if (ch == ' ') continue;
+        for (int i = 0; i < n; i++) {
+            char ch = s[i];
+
+            if (ch == ' ') continue;  
 
             if (isalnum(ch)) {
-                result += ch;
+                ans += ch;
             } else if (ch == '(') {
                 st.push(ch);
             } else if (ch == ')') {
                 while (!st.empty() && st.top() != '(') {
-                    result += st.top();
+                    ans += st.top();
                     st.pop();
                 }
                 if (!st.empty()) st.pop(); 
             } else {
                 while (!st.empty() &&
-                      (priority(ch) < priority(st.top()) ||
-                      (priority(ch) == priority(st.top()) && ch != '^'))) {
-                    result += st.top();
+                       (priority(ch) < priority(st.top()) ||
+                       (priority(ch) == priority(st.top())))) {
+                    ans += st.top();
                     st.pop();
                 }
                 st.push(ch);
@@ -48,12 +43,10 @@ public:
         }
 
         while (!st.empty()) {
-            result += st.top();
+            ans += st.top();
             st.pop();
         }
 
-    
-        reverse(result.begin(), result.end());
-        return result;
+        return ans;
     }
 };
