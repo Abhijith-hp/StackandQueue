@@ -2,7 +2,7 @@
 class Solution {
   public:
     vector<int> leftSmaller(vector<int> arr) {
-        // code here
+     
         vector<int>ans;
         std::stack<int>st;
         
